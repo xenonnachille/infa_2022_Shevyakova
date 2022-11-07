@@ -28,13 +28,12 @@ def init():
 
 
 def draw_angry_man(screen, x, y, r):
+    """рисует злого человечка"""
     circle(screen, YELLOW, (x, y), r)
-    #circle(screen, BLACK, (x, y), r, 0.02*r)
     circle(screen, RED, (x - int(0.44 *r), y - int(0.36*r)), int(0.16*r))
     circle(screen, BLACK, (x - int(0.44 *r), y - int(0.36*r)), int(0.08*r))
     circle(screen, RED, (x + int(0.46*r), y - int(0.34*r)), int(0.16*r))
     circle(screen, BLACK, (x + int(0.46*r), y - int(0.34*r)), int(0.08*r))
-
     polygon(screen, BLACK, [(x - r, y - int(0.86*r)), (x - int(0.22*r), y - int(0.46*r)), (x - r, y - int(0.86*r))], r//10)
     polygon(screen, BLACK, [(x + 0.1*r, y - 0.4*r), (x + r, y - 1.06*r), (x + 0.1*r, y - 0.4*r)], r//10)
     rect(screen, BLACK, (x - int(0.44*r), y, 0.9*r, int(0.14*r)))
@@ -53,6 +52,7 @@ class Game:
         self.font_style = font_style
 
     def start(self):
+        """запуск игры"""
         finished = False
         while not finished:
             clock.tick(FPS)
@@ -68,16 +68,19 @@ class Game:
             self.screen.fill(BLACK)
 
     def render_balls(self, delta_time):
+        """выводятся мячики"""
         for ball in self.balls.values():
             ball.x, ball.y = ball.x + ball.velocity_x*delta_time, ball.y + ball.velocity_y*delta_time
             ball.is_on_edge()
             ball.draw(self.screen)  
 
     def render_score(self):
+        """выводятся набранные очки"""
         score_text = self.font_style.render(f'Score: {self.score}', False,(255, 255, 255))
         self.screen.blit(score_text,(10,50))
 
     def new_ball(self, class_id):
+        """создается новый мяч (обычный или злой)"""
         if class_id == 0:
             self.balls[self.id_counter] =  Ball(randint(100, WIDTH - 100), randint(100, HEIGHT-100),random()-0.5,random()-0.5, randint(30,50),  COLORS[randint(0, 5)], self.id_counter, 1500)
         elif class_id == 1:
@@ -89,6 +92,7 @@ class Game:
 
 
     def add_time(self, delta_time):
+        """реализуется подсчет времени существования шарика"""
         to_delete = []
         for ball in self.balls.values():
             ball.add_time(delta_time)
@@ -108,6 +112,7 @@ class Game:
                 self.new_ball(0)
 
     def is_click_on_ball(self, position_x, position_y):
+        """удаляет мячи, которые поймали"""
         to_delete = []
         for ball in self.balls.values():
             if (position_x - ball.x) ** 2 + (position_y - ball.y) ** 2 <= ball.r ** 2:
@@ -133,9 +138,11 @@ class Ball:
         self.velocity_y = velocity_y
 
     def change_velocity(self, v_x, v_y):
+        """меняет скорость"""
         self.velocity_x, self.velocity_y = v_x, v_y
 
     def is_on_edge(self):
+        """обрабатывается столкновение с краем поля"""
         if (self.x + self.r > WIDTH):
             self.x = WIDTH - self.r        
             self.change_velocity(-self.velocity_x*(random() + 0.5), self.velocity_y * (random() - 0.5)*2)
@@ -150,6 +157,7 @@ class Ball:
             self.change_velocity(self.velocity_x*(random() - 0.5) * 2, -self.velocity_y*(random() + 0.5))
 
     def draw(self, screen):
+        """рисуется сам мяч"""
         circle(screen, self.color, (self.x, self.y), self.r)
 
     def add_time(self,delta_time):
@@ -162,11 +170,13 @@ class Angry_ball(Ball):
     type = 'Angry_ball'
 
     def change_direction(self):
+        """меняется направление"""
         self.velocity_x += self.velocity_x*(random()-0.5) + (random() - 0.5)
         self.velocity_y += self.velocity_y*(random()-0.5) + (random() - 0.5)
         self.timer = 0
 
     def draw(self, screen):
+        """рисуется злой мяч"""
         draw_angry_man(screen, self.x, self.y, self.r)
 
 
