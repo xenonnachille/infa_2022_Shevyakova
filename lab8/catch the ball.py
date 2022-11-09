@@ -30,13 +30,15 @@ def init():
 def draw_angry_man(screen, x, y, r):
     """рисует злого человечка"""
     circle(screen, YELLOW, (x, y), r)
-    circle(screen, RED, (x - int(0.44 *r), y - int(0.36*r)), int(0.16*r))
-    circle(screen, BLACK, (x - int(0.44 *r), y - int(0.36*r)), int(0.08*r))
-    circle(screen, RED, (x + int(0.46*r), y - int(0.34*r)), int(0.16*r))
-    circle(screen, BLACK, (x + int(0.46*r), y - int(0.34*r)), int(0.08*r))
-    polygon(screen, BLACK, [(x - r, y - int(0.86*r)), (x - int(0.22*r), y - int(0.46*r)), (x - r, y - int(0.86*r))], r//10)
-    polygon(screen, BLACK, [(x + 0.1*r, y - 0.4*r), (x + r, y - 1.06*r), (x + 0.1*r, y - 0.4*r)], r//10)
-    rect(screen, BLACK, (x - int(0.44*r), y, 0.9*r, int(0.14*r)))
+    circle(screen, RED, (x - int(0.44 * r), y - int(0.36 * r)), int(0.16 * r))
+    circle(screen, BLACK, (x - int(0.44 * r), y - int(0.36 * r)), int(0.08 * r))
+    circle(screen, RED, (x + int(0.46 * r), y - int(0.34 * r)), int(0.16 * r))
+    circle(screen, BLACK, (x + int(0.46 * r), y - int(0.34 * r)), int(0.08 * r))
+    polygon(screen, BLACK, [(x - r, y - int(0.86 * r)), (x - int(0.22 * r), y - int(0.46 * r)), 
+            (x - r, y - int(0.86 * r))], r // 10)
+    polygon(screen, BLACK, [(x + 0.1 * r, y - 0.4 * r), (x + r, y - 1.06 * r), 
+            (x + 0.1 * r, y - 0.4 * r)], r // 10)
+    rect(screen, BLACK, (x - int(0.44 * r), y, 0.9 * r, int(0.14 * r)))
 
 
 class Game:
@@ -77,14 +79,16 @@ class Game:
     def render_score(self):
         """выводятся набранные очки"""
         score_text = self.font_style.render(f'Score: {self.score}', False,(255, 255, 255))
-        self.screen.blit(score_text,(10,50))
+        self.screen.blit(score_text, (10,50))
 
     def new_ball(self, class_id):
         """создается новый мяч (обычный или злой)"""
         if class_id == 0:
-            self.balls[self.id_counter] =  Ball(randint(100, WIDTH - 100), randint(100, HEIGHT-100),random()-0.5,random()-0.5, randint(30,50),  COLORS[randint(0, 5)], self.id_counter, 1500)
+            self.balls[self.id_counter] =  Ball(randint(100, WIDTH - 100), randint(100, HEIGHT - 100),random() - 0.5, random() - 0.5, 
+                                                randint(30, 50),  COLORS[randint(0, 5)], self.id_counter, 1500)
         elif class_id == 1:
-            self.balls[self.id_counter] =  Angry_ball(randint(100, WIDTH - 100), randint(100, HEIGHT-100),(random()-0.5)*3,(random()-0.5)*3, randint(30,50),  COLORS[randint(0, 5)], self.id_counter, 1000)
+            self.balls[self.id_counter] =  Angry_ball(randint(100, WIDTH - 100), randint(100, HEIGHT - 100), (random()-0.5) * 3,
+                                                        (random() - 0.5) * 3, randint(30, 50),  COLORS[randint(0, 5)], self.id_counter, 1000)
         self.id_counter+=1
 
     def delete_ball(self, id):
@@ -106,7 +110,7 @@ class Game:
         self.new_ball_timer+=delta_time
         if self.new_ball_timer >= self.spawn_time:
             self.new_ball_timer = 0
-            if random() > 0.9:
+            if random() > 0.7:
                 self.new_ball(1)
             else:
                 self.new_ball(0)
@@ -171,8 +175,8 @@ class Angry_ball(Ball):
 
     def change_direction(self):
         """меняется направление"""
-        self.velocity_x += self.velocity_x*(random()-0.5) + (random() - 0.5)
-        self.velocity_y += self.velocity_y*(random()-0.5) + (random() - 0.5)
+        self.velocity_x += self.velocity_x*(random() - 0.5) + (random() - 0.5)
+        self.velocity_y += self.velocity_y*(random() - 0.5) + (random() - 0.5)
         self.timer = 0
 
     def draw(self, screen):
