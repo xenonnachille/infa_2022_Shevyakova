@@ -110,7 +110,7 @@ class Game:
         self.new_ball_timer+=delta_time
         if self.new_ball_timer >= self.spawn_time:
             self.new_ball_timer = 0
-            if random() > 0.7:
+            if random() > 0.8:
                 self.new_ball(1)
             else:
                 self.new_ball(0)
