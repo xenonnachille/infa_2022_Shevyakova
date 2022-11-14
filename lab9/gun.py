@@ -178,7 +178,6 @@ while not finished:
     text = pygame.font.Font(None, 36)
     text_1 = text.render(('SCORE: ' + str(SCORE)), True, MAGENTA)
     screen.blit(text_1, (100, 50))
-    pygame.display.update()
     gun.draw()
     target_1.draw()
     target_2.draw()
